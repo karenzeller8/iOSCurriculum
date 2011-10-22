@@ -1,12 +1,14 @@
-#Introduction
+#iOSChix's Practical Guide to iPhone and iPad Development
 
-##System Prerequisites
+##Introduction
 
-##Prerequisite Knowledge
+###System Prerequisites
 
-##Philosophy of this Course
+###Prerequisite Knowledge
 
-1.	Care about the quality. We've designed and executed this course around the Golden Rule; we want to provide training that we wish could have existed when we were learning the technology.
+###Philosophy of this Course
+
+1.	We care about the quality. We've designed and executed this course around the Golden Rule; we want to provide training that we wish could have existed when we were learning the technology.
 
 2.	People have different learning abilities and backgrounds. Many of you may even have English as a secondary professional language. So we do our best to present clearly, provide information in plain English, minimize jargon, plus use examples and visuals to help you learn.
 
