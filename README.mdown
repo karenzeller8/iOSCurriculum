@@ -1,0 +1,6 @@
+##A iOSChix Practical Guide to iPhone and iPad Development
+
+This project started out of frustration. There is quite a bit of content out there and training around developing for the iPhone and iPad. However like many others, we are not particularly good at sticking to a learning plan without human contact, interaction, and pressure (read deadlines), plus we have very high standards for the learning material. So like Little Red Hen, one of our first female role models in the form of a fowl, who said "Then I'll do it myself," we are embarking on creating quality courseware and materials people and IT professionals specifically deserve on the topic.
+
+
+
