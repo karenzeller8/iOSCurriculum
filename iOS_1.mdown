@@ -1,0 +1,53 @@
+#Technical Pre-Requisites
+
+1.	Required: Mac OS X Leopard (version 10.5) or above
+2.	Be register as Apple Developer
+3.	iPhone Developer Program membership ($99 a year). 
+	If you want to do on-device testing, that is on a iPhone or iPad connected to your computer, you need to join, or else you're limited to the iPhone Simulator in xCode. or can investigate if available if you are part of an educational institution.
+4.	Xcode for your MacOS Version, e.g. Snow Leopard + .iOS SDK is distributed as part of XCode and you can start building apps for iPhone/iPad and test them in the Simulator. The SDK is an object-orinted library which is a framework for creating the apps. 
+5.	Optional but Recommended: iPhone, iPad or iPod Touch
+
+*Note: Be aware each major iOS release, especially 4.x and 5.x aren't supported on some of the older devices.* 
+
+"On device development" vs. using the iPhone Simulator. Simulator runs on the mac and shows you what the app will look like device, or can run on iPhone/pad connected to your Mac.  Phase I = on mac, rapid iteration, Phase II- final, also can test w/ accelerometer*
+
+Pre Requisite Knowledge
+
+- Some experience with an object-oriented programming language,
+- Some experience and comfort level using an integrated development environment (IDE)
+
+Key Points on Programming
+
+- Cocoa Touch ('Cocoa') is the API for building apps on iPHone, iPAD and Ipod touch rfrom Apple. It's written mainly in Objective-C
+- Cocoa follows a MVC (Model View Controller Software Architecture)
+- Cocoa is the highest level (vs. lowest of) of technologies on these devices; provides highest level of abstraction, and most developer productivity for creating end-user applications.
+- Cocoa: enables animation, multitasking, and gesture recognition
+
+Key iPhone Concepts
+
+- Apps are made up of multiple objects, such as buttons, labels, etc. This are called view
+- A window is the main application object, which is like a canvas that contains all app objects. 
+
+XCode in General
+
+Package with all the tools for developing for Macs, and iOS. Ones to know about:
+
+- Development Environment
+- Compiler for converting your source into executable on your target device
+- iOS Simulator
+- Performance tools
+
+Creating Projects in Xcode:
+
+- Project represents all the code and resources needed for your app.
+- Code: the device instructions, in Objective-c
+- Resources: images, icons, etc.
+
+- Two types of files created in Xcode: .xib, and .plist
+- .xib is the the user interface for your app.
+- .plist are key value pairs used to configure your app.
+
+- Create an application by creating all the different view programmatically, or
+- You can use XCode Interface Builder, which is a drag-and-drop visual interface for adding user interface to your application and associated them to actions 
+
+

@@ -6,6 +6,27 @@ However like many others, we are not particularly good at progressing with a lea
 
 So like Little Red Hen, one of our first female role models in the form of a fowl, who said "Then I'll do it myself," we are embarking on creating quality courseware and materials people and IT professionals specifically deserve on the topic, and we would have wished existed as we learned the technology.
 
+##Visiting Us
+
+We expect a blog up and running, chronicling our work on this course, and showing what we plan on learning and teaching. Visit: 
+
+##About the Guide
+
+This is written as part of developing and delivering online curriculum on iPhone and iPad Development and contains all the major code samples presented during the course.
+
+It is written for people who want to build applications for the iPhone and iPad and expects experience with at least one other object-oriented program language plus comfort reading programming languages. You also need to be comfortable setting up your own development environment.
+
+We could start the content with lower prerequisite knowledge, but then it is much harder to get anything accomplished which is rewarding, tangible, and applicable to problems we want to solve on mobile devices. 
+
+If feel you lack the prerequisite knowledge for benefiting most from this course, there are many resources out there for learning how to program, and the language used for iPhone and iPad development, Objective C. You might find these resources useful, and moreover fun:
+
+- Objective-C Programming: The Big Nerd Ranch Guide is well written and full of exercises that are both challenging and rewarding.
+- Programming in Objective-C, by Stephen G. Kochan. If you want to cut to the chase and start learning more about the language even if you are completely new to any programming language, this one is good to start with.
+
+A couple personal, quirky favorites outside of the Objective-C scope, but are nonetheless good for understanding object-oriented programming 
+
+
+
 
 
 
