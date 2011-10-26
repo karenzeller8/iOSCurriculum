@@ -1,4 +1,4 @@
-#Technical Pre-Requisites
+##Technical Pre-Requisites
 
 1.	Required: Mac OS X Leopard (version 10.5) or above
 2.	Be register as Apple Developer
@@ -11,43 +11,135 @@
 
 "On device development" vs. using the iPhone Simulator. Simulator runs on the mac and shows you what the app will look like device, or can run on iPhone/pad connected to your Mac.  Phase I = on mac, rapid iteration, Phase II- final, also can test w/ accelerometer*
 
-Pre Requisite Knowledge
+##Pre-Requisite Knowledge
 
 - Some experience with an object-oriented programming language,
 - Some experience and comfort level using an integrated development environment (IDE)
 
-Key Points on Programming
+##Key Points on Programming
 
-- Cocoa Touch ('Cocoa') is the API for building apps on iPHone, iPAD and Ipod touch rfrom Apple. It's written mainly in Objective-C
-- Cocoa follows a MVC (Model View Controller Software Architecture)
-- Cocoa is the highest level (vs. lowest of) of technologies on these devices; provides highest level of abstraction, and most developer productivity for creating end-user applications.
-- Cocoa: enables animation, multitasking, and gesture recognition
+- Cocoa Touch ('CT') is the API for building apps on iPHone, iPAD and Ipod touch rfrom Apple. It's written mainly in Objective-C
+- CT follows a MVC (Model View Controller Software Architecture)
+- CT is the highest level (vs. lowest of) of technologies on these devices; provides highest level of abstraction, and most developer productivity for creating end-user applications.
+- CT has a lot of OO design patterns available in the framework
+- CT: enables animation, multitasking, and gesture recognition
 
-Key iPhone Concepts
+##Key iPhone Concepts
 
 - Apps are made up of multiple objects, such as buttons, labels, etc. This are called view
 - A window is the main application object, which is like a canvas that contains all app objects. 
 
-XCode in General
+##Xcode in General
 
 Package with all the tools for developing for Macs, and iOS. Ones to know about:
 
-- Development Environment
+- Development Environment, keywords, source code completion, debug.
 - Compiler for converting your source into executable on your target device
 - iOS Simulator
 - Performance tools
 
-Creating Projects in Xcode:
+##Creating Projects in Xcode:
 
 - Project represents all the code and resources needed for your app.
 - Code: the device instructions, in Objective-c
 - Resources: images, icons, etc.
 
 - Two types of files created in Xcode: .xib, and .plist
-- .xib is the the user interface for your app.
+- .xib is the the user interface for your app, represented in XML. (.nib file is the compiled version of your app.)
 - .plist are key value pairs used to configure your app.
 
 - Create an application by creating all the different view programmatically, or
-- You can use XCode Interface Builder, which is a drag-and-drop visual interface for adding user interface to your application and associated them to actions 
+- You can use XCode Interface Builder, which is a drag-and-drop visual interface for adding user interface to your application and associated them to actions. It has many pre-built application elements (tables, sliders, etc.)
+
+##Interface Builder
+
+- Interface Builder = Gui-based development, and object editor.
+- Library: prebuilt objects you can reuse and customize (for view and controller)
+- Window: visual representation of your current app
+- Inspector: Properties of any element selected in Window, including window itself. Properties are clustered into sets.
+
+##Creating a First App
+
+MainWindow.xib = primary focus of our work...In Interface Builder, it  is opens as The Doc Window.
+
+By default, all apps will have this in their MainWindow.xib:
+
+- File's Owner: event queue for the application are handled here
+- First Responder: 	has to do with Cocoa Event-Handling model and which object responds first to a user-driven event. (Don't have to get into detail about it now....)
+- QuizAppDelegate: controller for the overall application. 
+ - Window object
+
+NOTE: Earlier versions of IB had Actions in the inspector. They appear under the object in the Library in Xcode 4.3.
+
+##Object Basics
+
+Action: Behavior/Method
+Outlets: State, Instance variables
+
+##Model-View-Controller
+
+This is a design pattern used frequently in object-oriented programming and you'll see it in iPhone development:
+
+- View objects are visible to the user, such as buttons, text, and menus. 
+- Model objects contain data, which can be from a file, a database, or other source. Typically model objects have no access to instance variables in view objects, but controller objects can access data from a model. Similarly, view objects have no direct access to instance variables/objects in model objects.
+- Controllers provide a link between the user interface and the system. They can arrange for the right views to be displayed, and they can typically access data from both model objects and instance variables in application views.
+
+
+###Exercises
+
+- Hello World
+- Basic gui app
+- Larger, multi-week, "twitter-like"
+- Chosen final project
+
+###Topics
+Design patterns
+View controllers
+Displaying Data
+Dealing with Local and Remote data
+Text input
+Multithreading
+Address Book and other system integration
+
+##iOS high Level 
+- A lot shared with Mac OS X
+- Pieces in common: os/unix, core app services, media, then big diff is Cocoa Touch
+- CoreOS: Kernel, security, BSD, Sockets (rare to use)
+- Core servies: address book, networking, file acces, Sqlite, collections
+- Media: Audio, video, OpenAL
+- Cocoa Touch: Multi-touch event, alerts, web vivew, view hierarchy, image picker, controllers, web views
+
+##Object Review
+
+- Object =  thing = behavior + state (numbers, string, booleans, pointer to other object/helper)
+- Outlets: Connect controllers to views. They are pointers that reference.....
+- Action: Method
+- Connections Inspector: see object in view available to be connected, make the connection
+
+###Building Code Files:
+
+- Quick way in IB is to do File > Write Class File and associate with existing app.
+- This generates two files for class: header and method file (.h and .m) .m is where you add your code....
+
+*Note: Word of explaination about "NS" thats the prefix for all many objects in Objective-C*
+
+###Making Connections:
+
+- After you create view objects, controllers, and controller actions/methods, you create connections so that the UI objects can trigger actions in the controller, and likewise a controller can possibly update the state of the UI.
+-You drag from the object with the pointer (e.g. Controller objects) and to the object that you want that pointer to point at (primarily Views).
+
+###Setting Targets and Actions
+
+- When a UI object is used need know what method/action to trigger, and it needs to know who (or which object/Controller) will be sent a message. The former is the action, the latter, the target.
+- In Interface Builder you Control-drag the view object to the controller and under the controller, the appropriate action.
+
+###Useful Resources:
+
+- Apple Developer iOS Human Interface Guidelines: http://developer.apple.com/library/ios/#DOCUMENTATION/UserExperience/Conceptual/MobileHIG/UIElementGuidelines/UIElementGuidelines.html
+
+
+
+
+
 
 
