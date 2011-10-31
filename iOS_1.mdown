@@ -1,3 +1,24 @@
+##Outline
+
+- Introduction, First Application
+- Objective-C Refresher: Console App
+- Foundation Classes, XCode and Interface Builder
+- Memory Management
+- Using Views
+- Controllers
+- Accelerometer
+- Table Views and Controllers
+- MVC Application
+- Navigation
+- Animation
+
+###Exercises
+
+- Hello World
+- Basic gui app
+- Larger, multi-week, "twitter-like"
+- Final Project
+
 ##Technical Pre-Requisites
 
 1.	Required: Mac OS X Leopard (version 10.5) or above
@@ -14,7 +35,8 @@
 ##Pre-Requisite Knowledge
 
 - Some experience with an object-oriented programming language,
-- Some experience and comfort level using an integrated development environment (IDE)
+- Some experience and comfort level using an integrated development environment (IDE),
+- Experienced and familiarity learning, or refreshing yourself on programming concepts, such as design patterns, and programming paradigms.
 
 ##Key Points on Programming
 
@@ -43,6 +65,7 @@ Package with all the tools for developing for Macs, and iOS. Ones to know about:
 - Project represents all the code and resources needed for your app.
 - Code: the device instructions, in Objective-c
 - Resources: images, icons, etc.
+- Console: ????
 
 - Two types of files created in Xcode: .xib, and .plist
 - .xib is the the user interface for your app, represented in XML. (.nib file is the compiled version of your app.)
@@ -85,24 +108,19 @@ This is a design pattern used frequently in object-oriented programming and you'
 - Controllers provide a link between the user interface and the system. They can arrange for the right views to be displayed, and they can typically access data from both model objects and instance variables in application views.
 
 
-###Exercises
-
-- Hello World
-- Basic gui app
-- Larger, multi-week, "twitter-like"
-- Chosen final project
-
 ###Topics
-Design patterns
-View controllers
-Displaying Data
-Dealing with Local and Remote data
-Text input
-Multithreading
-Address Book and other system integration
 
-##iOS high Level 
-- A lot shared with Mac OS X
+- Design patterns
+- View controllers
+- Displaying Data
+- Dealing with Local and Remote data
+- Text input
+- Multithreading
+- Address Book and other system integration
+
+##iOS high Level
+ 
+- A lot of functionality derived Mac OS X, then adapted for functionality on a mobile device.
 - Pieces in common: os/unix, core app services, media, then big diff is Cocoa Touch
 - CoreOS: Kernel, security, BSD, Sockets (rare to use)
 - Core servies: address book, networking, file acces, Sqlite, collections
@@ -120,6 +138,9 @@ Address Book and other system integration
 
 - Quick way in IB is to do File > Write Class File and associate with existing app.
 - This generates two files for class: header and method file (.h and .m) .m is where you add your code....
+-.h files are header files which contain actual method declarations and instance variables for the methods.
+-.m files contains code for the methods (actual implementation, operations that occur when method executes.)
+
 
 *Note: Word of explaination about "NS" thats the prefix for all many objects in Objective-C*
 
@@ -133,13 +154,365 @@ Address Book and other system integration
 - When a UI object is used need know what method/action to trigger, and it needs to know who (or which object/Controller) will be sent a message. The former is the action, the latter, the target.
 - In Interface Builder you Control-drag the view object to the controller and under the controller, the appropriate action.
 
+##Event-driven Programming in iOS
+
+This basically means the flow of the program is driven by events, such as user actions, messages from other programs, or other application process.
+
+Here's the basic process that occurs over and over in an iOS app:
+
+- Application waits for an event to occur
+- When the user touches the screen, this event is sent to the view that was touched
+- The view sends a message to a controller to run a specific controller method.
+- The controller method changes the state of view, which redraws itself and updates the screen.
+
+This process is called an event loop.
+
+##Application Properties
+
+Every application you create will have a file called your_app_name.plist. This in the Resources folder of your application.
+
+- Drag the icon from Finder to the Resources folder in Xcode.
+
 ###Useful Resources:
 
 - Apple Developer iOS Human Interface Guidelines: http://developer.apple.com/library/ios/#DOCUMENTATION/UserExperience/Conceptual/MobileHIG/UIElementGuidelines/UIElementGuidelines.html
+- Xcode Help: especially Reference Library Resources
+- Objective-C: 		http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html
+ 		http://developer.apple.com/library/ios/#documentation/Cocoa/Conceptual/OOP_ObjC/Introduction/Introduction.html
+
+##Refresher on Object-Oriented Programming
+
+- Class: is like standardized blueprint or recipe for objects in an application. It defines how an object should behave and what kinds of data it contains. E.g. Cat should eat, meow, and have four sets of retractable claws.
+- Instance: an actual unique object that exists and is based on a class. E.g. Charlie is a cat (a calico specifically.)
+- Method: operations that an object can perform. e.g. Charlie can climb up a chair.
+- Instance Variable: information that belongs to a specific object; this information is unique to the object. e.g. Charlie has green eyes.
+
+
+- Encapsulation: Keep implementation private and separate from the interface. E.g. you can have a method that authenticates a user (checks username and password), other parts of the application know when to go to it (before a user can add a comment), but the other parts of the programming do not have to know how the authentication process actually happens.
+
+- Polymorphism: Different objects can have the same interface. Methods across objects have functions that are structured and operate in a common way.
+- Inheritance: One object inherits behavior, or data (characteristics) from a class. E.g. your pet cat can scratch and climb, as defined by all that inherit from the superclass Cat.
+- Introspection: You can ask a class or object what type of class it is.
+- Superclass: Defines behavior and data for a class. E.g. snakes have no legs and swallow their food whole.
+- Subclass: "inherit," or take on behavior and data from the superclass. The subclass cam also provide additional behavior/data. E.g. Vipers have all the behavior of snakes (legless, cannot chew) but also have hollow fangs to inject venom.
+- NSObject: The root of all other objects. This class defines the basic functionality that all other objects will have such as memory management, introspection.
+
+##Review of Objective-C
+
+- Objective-C = Language
+- Cocoa = Library, framework for objects used in OSX and iOS
+- In Objective-C, everything is an object, even a class.
+- Objective-C, a superset of C
+- Single inheritance
+- Protocols define behavior that crosses classes. Can specify if behavior mandatory or optional for a class with protocols.
+- Dynamic runtime: classes are objects are looked up at runtime and appropriate implementation of their methods used at this point (vs. at compile-time)
+- Can use loose or strong typing: can specify type of object or not.
+
+###New Types
+
+- id: used for an anonymous object (which does not have the object type explicitly defined)
+- Class
+- Selectors: function calls you make to an object
+
+###Classes and Objects
+
+- Objects represent something in the real world in an application, e.g. your car
+	- Attributes: belong to an object, and help define it, such as make and model.
+	- Actions: what an object can do, such as starting and turning.
+- Classes describe attributes and actions for an object object. Serves as a template for all objects that are cars. Can also see it as a factory that creates cars on request:
+	- Object: you can ask a Car class to make you a new car, and it will create a car object by creating a placeholder in memory for it.
+	- Instance: the new car object is called an *instance* of the Car class.
+	- Message: if you want an object to perform one of its actions, you send it a message.
+- Variables: Store information about a class or object. 
+	- Objects: state/Data is maintained using instance variables which belong to an object.
+	- Classes: class variables belong to the class itself
+- Methods: can belong to class or object too
+	- Instance methods are performed by individual objects
+	- Class methods typically create new instances or maintain some property which applies to all the class
+- Behavior is expressed by methods. 
+- Instance variables are available using getter and setter methods
+
+###Syntax
+
+In Objective-C, the keyword for instance variable is 'ivar'
+
+
+####The Joy of Dot Syntax
+
+Objective-C 2.0 introduced dot syntax used to separate object and method being called from that object, including getter/setter methods (also known as attribute accessors) This is similar to other languages, and is converted by the compiler into the appropriate method call and object:
+
+int edition = book1.edition //sets value of edition to the edition from a book object.
+
+[[book volume] setEdition:latestEdition] is equivalent to:
+
+book.volume.edition = latestEdition //sets edition for a volume of a book to the value latest Edition
+
+
+####Methods
+ 
+To get an object to execute one of its methods you send that object a message. Messages have three parts:
+
+- Receiver: points to object being asked to execute its method
+- Selector: name of method to be executed
+- Arguments: how a method should execute, parameters provided to method
+
+e.g. [arrayInstance addObject:anotherObject];
+
+Can be called for instances/objects or classes. Note the semicolin to end each statement and in the case of a class method, you have a '+' starting the call, and for objects a '-' starts the call.
+
+Contains the bracket code:
+
+[person doThis]
+[person doThis:argument]
+[person doThis:argument1 andArg:argument2]
+
+First part of the statement is the object or class, and the second part is the method from the object/class you want to execute.
+
+Use a colin after the method name to pass a parameter. Multiple parameters are in the form of parameterName:value.
+
+Using Objective-C terminology, 
+
++ Message expression: [receiver method:argument]
++ Message: is the method:argument in previous statement
++ Selector: identifies the method in previous statement, can view it as the 'address' where a method actually lives.
++ Method: code selected by a message
+
+####Creating Objects
+
+1. Statically typed objects (predefine what type of object it is when you create the object.) Assuming a Person class exists, the syntax is:
+
+Person *teacher; //* precedes an object name when you create it
+
+Statically typed objects will be checked at compile time.
+
+2. Dynamically-typed objects (a.k.a. loosely typed objects):
+
+id anObject; 
+
+In this case you are responsible for eventually know what this object can do and calling it appropriately (e.g. methods exist for the object when you refer to them.) Here you create a 'generic' NSObject, the most basic level of object.
+
+Destroying objects:
+
+[thisObject release];
+
+Setting object to nothing/zero:
+
+thisObject = nil;
+
+####Types
+
+Declaring object types can be done two ways: 
+
+id anObject // a dynamically typed object. 
+
+int yourAge = 34; //statically typed variable
+Person *anObject // statically typed
+
+For statically typed objects, the compiler will catch errors and warn you if you are using the wrong type of object/data for a function. For dynamically typed objects, if you refer to data or functions that do not exist for the object the application crashes or hangs.
+
+
+####Null Object/Nil
+
+Indicates an object has no value:
+
+- Testing for Nil: 
+	- if (person == nil) return;
+	- if (!person) return;
+-As assignments and arguments:
+	- person = nil;
+	- [button setTarget: nil]
+- Can call method on nil object, and it will return nil:
+	 person = nil;
+	 [person stateName];
+
+####Booleans
+
+Values = YES or NO: 
+	
+	BOOL flag = NO;
+	
+####Class Introspection
+
+- Find out from an object what type of class it is
+- Test if object derived from a more general superclass: isKindOfClass // YES if an object of that class or subclass
+- Test if object part of specific class, including subclasses: isMemberOfClass // YES if an object of that class
+
+####Class and Subclasses
+ 
+- the '-' means you are calling a method for an object
+	
+- the '+' means you are calling a method from the class
 
 
 
+####Identity and Equality
 
+- Identity: object1 == object2 // YES if we are referring to the same object in memory
+- Equality: object1 isEqual: object2 // YES if attributes from two objects are equivalent
+
+- Interpolation: "%@" formats and objects into a string representation.
+- Description:	(NSString *)description; // Provides description of object
+
+###Foundation Classes
+
+Part of Cocoa, a series of libraries written in Objective-C and used in OSX and iOS development.
+
+- Value and collection classes
+- User defaults
+- Archiving
+- Notifications
+- Undo manager
+- Task, timers, threads
+- File system, pipes, I/O, bundles
+
+Major classes include:
+
+- NSObject, the foundation of all other objects
+- NSString: @"this string" // @ symbol creates the NSString object
+	- %@; outputs the string content
+	- [Variety of string methods]
+- Collections
+	- Array: ordered collection
+		-They contain pointer (locations) of objects
+		-Can hold any type of Objective-C object
+		-One array can contain different types of objects
+		-But primitives, such as ints, or C structures cannot be held.
+		-nil cannot be added, but you can add a NSNull object (which represents nil.)		
+	- Dictionary: e.g. hash, key-value pairs
+	- Set: unordered collection
+- Enumeration
+	- for
+	- for (Object *obj in array) // similar to Ruby each
+- NSNumber: variety of math functions
+
+####Mutable and Immutable
+
+Mutable objects, such as arrays can be changed or you can add to them. Immutable objects such as NSArray is immutable, meaning you cannot add or remove objects after the array is originally (it is a read-only array.)
+
+Major classes that come in mutable and immutable forms are arrays, sets, dictionaries, strings, data.
+
+####Arrays
+
+- Create: Easiest create and initialize it at the same time.
+	NSMutableArray *items = [[NSMutableArray alloc] init]; //creates the array and initializes it
+- addObject: Adds an object to the end of the array.
+	[items addObject:@"this"];
+- objectAtIndex: Retrieves from the first array position.
+	NSString *object = [array objectAtIndex:0] //
+- count: Returns the number of items in an array as an integer
+	int num = [array count];
+- insertObject: Inserts object into an array at specific position, as long as the position is less than or equal to current number of items in the array.
+
+	int numObjects = [array count];
+	[array insertObject:object atIndex:numObjects];
+
+####NSString
+
+Used throughout CocoaTouch
+
+- @"string constant"
+- NSString *aString = @"string"; // assigning strong to an NSString object
+
+Outputting strings, uses %@ to extract the content from an string object:
+
+NSString @aString = @"World";
+NSString *log = [NSString stringWithFormat: @"Hello '%@'", aString];
+
+Logs the content, Hello World 
+
+Concatenation uses stringByAppendingString method:
+
+NSString *myString = @"Hello";
+NSString *fullString;
+
+fullString = [myString stringByAppendingString:@" world!"]; // assigns content "Hello World" to fullString object
+
+####Enumeration
+
+In many languages you need to do an iterator (i.e. for loop), Objective-C has a enumerator for arrays to make it simpler and readable (similar to do/each in Ruby):
+
+The following are functional equivalents: 
+
+for (i=0, i < count; i++) {
+	//do something
+}
+
+for (Student *student in array) {
+	//do something
+}
+
+####Integers, Numbers, Floats
+
+No mutable version.
+
+####Custom Classes
+
+1.	Determine superclass (when in doubt, NSObject, the most generic)
+2.	What properties
+3.	What actions
+
+####Methods, Selectors, Message
+
+- Method is behavior that an object can do
+- Selector, is the way to reference a method (in other languages, the method call and what it looks like, including parameters)
+- Message, the actual execution of a selector on an object.
+
+####Defining a Class
+
+Classes have two parts, one is in the public header file (.h), and the actual implementation of method goes into the private .m file of a project.
+
+#####Header File
+
+1.	Importing the library. We need to include the library that contains the class we are basing our class on. This loads the library and enable us to reference it. In this case NSObject is in the Foundation library:
+
+#import <Foundation/Foundation.h>
+
+2.	Declaring a class. In the code block, we start by naming it, and show it is based on NSObject.
+
+@interface Person : NSObject {
+	// some data
+	NSString *name;
+	int age;
+}
+	// some methods
+	- (NSString *)name;
+	- (void)setName:(NSString *)value;
+	
+	- (int)age;
+	- (void)setAge:(int)age;
+	
+	- (Bool)canLegallyVote;
+	- (void)castBallot;
+@end
+
+3.	Add instance variables (data that should belong to one of these objects):
+
+	NSString *name;
+	int age;
+
+4.	Add methods, including methods that can get and set values:
+
+	- (NSString *)name;
+	- (void)setName:(NSString *)value;
+
+	- (int)age;
+	- (void)setAge:(int)age;
+
+	- (Bool)canLegallyVote;
+	- (void)castBallot;
+
+#####Creating .m Files
+
+
+
+##Deploying an Application
+
+This is where you need a iPhone Developer Program membership, if you do not already have one. It is in theory optional for learning development, since you can always do incremental development and testing in the simulator, but if you want to do testing on your device, you will need it. You also need it to provide the application in the iTunes store.
+
+##Application Conventions
+
+- For any iPhone application icon that displays in the device, the icon image must be a 57×57 pixel PNG file. You put them in the Resources folder of your project.
+- For the iTunes store, icons need to be 512 x 521 pixels and can be JPEG or PNG. It needs to be in a Resources group called iTunesArtwork.
 
 
 
