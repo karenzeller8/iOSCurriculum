@@ -237,7 +237,7 @@ Every application you create will have a file called your_app_name.plist. This i
 In Objective-C, the keyword for instance variable is 'ivar'
 
 
-####The Joy of Dot Syntax
+####Dot Syntax
 
 Objective-C 2.0 introduced dot syntax used to separate object and method being called from that object, including getter/setter methods (also known as attribute accessors) This is similar to other languages, and is converted by the compiler into the appropriate method call and object:
 
@@ -248,7 +248,7 @@ int edition = book1.edition //sets value of edition to the edition from a book o
 book.volume.edition = latestEdition //sets edition for a volume of a book to the value latest Edition
 
 
-####Methods
+####Using Methods
  
 To get an object to execute one of its methods you send that object a message. Messages have three parts:
 
@@ -260,13 +260,13 @@ e.g. [arrayInstance addObject:anotherObject];
 
 Can be called for instances/objects or classes. Note the semicolin to end each statement and in the case of a class method, you have a '+' starting the call, and for objects a '-' starts the call.
 
-Contains the bracket code:
+The following are examples of messages, including the bracket syntax:
 
 [person doThis]
 [person doThis:argument]
 [person doThis:argument1 andArg:argument2]
 
-First part of the statement is the object or class, and the second part is the method from the object/class you want to execute.
+First part of the statement is the object or class, and the second part is the method from the object/class you want to execute. The third part of a message are arguments, also known as parameters, which the method can operate on. Note that arguments are each paired with an appropriate label. 
 
 Use a colin after the method name to pass a parameter. Multiple parameters are in the form of parameterName:value.
 
@@ -278,6 +278,7 @@ Using Objective-C terminology,
 + Method: code selected by a message
 
 ####Creating Objects
+
 
 1. Statically typed objects (predefine what type of object it is when you create the object.) Assuming a Person class exists, the syntax is:
 
@@ -367,7 +368,8 @@ Part of Cocoa, a series of libraries written in Objective-C and used in OSX and 
 
 Major classes include:
 
-- NSObject, the foundation of all other objects
+- NSObject, the foundation of all other objects. This means at minimum all other classes on Objective-C will inherit some methods and attributes from this class.
+
 - NSString: @"this string" // @ symbol creates the NSString object
 	- %@; outputs the string content
 	- [Variety of string methods]
@@ -385,6 +387,23 @@ Major classes include:
 	- for (Object *obj in array) // similar to Ruby each
 - NSNumber: variety of math functions
 
+Example of creating a class:
+
+1.	In Xcode select File | New File.
+
+2.	In the Mac OS X section, select Cocoa Class.
+
+3.	Select Objective-C class.
+
+4.	In the dropdown Subclass of, select NSObject.
+
+5. 	Click Next.
+
+	Xcode create your Objective-C class as two files, a header file and an implementation file (suffixed with .h and .m respectively):
+	
+	- The header declares the new class, its superclass, instance variables, and methods for the class.
+	- The .m file is where you provide code for implementing methods for the class.
+	 
 ####Mutable and Immutable
 
 Mutable objects, such as arrays can be changed or you can add to them. Immutable objects such as NSArray is immutable, meaning you cannot add or remove objects after the array is originally (it is a read-only array.)
@@ -393,14 +412,35 @@ Major classes that come in mutable and immutable forms are arrays, sets, diction
 
 ####Arrays
 
-- Create: Easiest create and initialize it at the same time.
-	NSMutableArray *items = [[NSMutableArray alloc] init]; //creates the array and initializes it
+Arrays are container that can contain a ordered list of objects. An array does not contain the objects themselves, rather references to each object are in the array. There are two types of arrays in Objective-C:
+
+- NSArray: which is immutable, and cannot be changed 
+- NSMutableArray: you can use this if you want to add or remove objects
+
+Arrays can contain any type of Objective-C object; but this means primitive data types (primitives), such as integers, cannot be contained. In these cases you need to create an object to represent the primitive and then add it to an array.
+
+Note too that nil cannot be added to an array. To specify an empty array element, you would add the null object, NSNull:
+
+[array addObject: [NSNull null]];
+
+Array methods include: 
+
+- Create: Typically it is easiest to create it, allocate memory for it, and initialize it at the same time.
+
+	NSMutableArray *items = [[NSMutableArray alloc] init]; 		//creates the array and initializes it
+
 - addObject: Adds an object to the end of the array.
+
 	[items addObject:@"this"];
+	
 - objectAtIndex: Retrieves from the first array position.
+
 	NSString *object = [array objectAtIndex:0] //
+
 - count: Returns the number of items in an array as an integer
+
 	int num = [array count];
+
 - insertObject: Inserts object into an array at specific position, as long as the position is less than or equal to current number of items in the array.
 
 	int numObjects = [array count];
@@ -408,7 +448,7 @@ Major classes that come in mutable and immutable forms are arrays, sets, diction
 
 ####NSString
 
-Used throughout CocoaTouch
+This class is used throughout CocoaTouch:
 
 - @"string constant"
 - NSString *aString = @"string"; // assigning strong to an NSString object
@@ -445,6 +485,9 @@ for (Student *student in array) {
 
 No mutable version.
 
+####Subclassing in Objective-C
+
+
 ####Custom Classes
 
 1.	Determine superclass (when in doubt, NSObject, the most generic)
@@ -461,11 +504,26 @@ No mutable version.
 
 Classes have two parts, one is in the public header file (.h), and the actual implementation of method goes into the private .m file of a project.
 
+@interface Possession : NSObject {
+	
+}
+@end
+
+Here we declare a class using the keywords @interface ClassName. The colin and name of the superclass follows. In Objective-C you can only inherit from one class.
+
+@interface ClassName : SuperclassName
+
+The curly bracket that follows a class declaration should contain any instance variables. 
+
+After the closing curly brace, any methods that this class implements should be declared. Any methods you declare here must have respective method implementations in the .m file for this class. If a method implementation is missing, you will get a  compiler warning.
+
+Finally the @end keyword completes the class declaration.
+
 #####Header File
 
 1.	Importing the library. We need to include the library that contains the class we are basing our class on. This loads the library and enable us to reference it. In this case NSObject is in the Foundation library:
 
-#import <Foundation/Foundation.h>
+\#import <Foundation/Foundation.h>
 
 2.	Declaring a class. In the code block, we start by naming it, and show it is based on NSObject.
 
@@ -500,8 +558,231 @@ Classes have two parts, one is in the public header file (.h), and the actual im
 
 	- (Bool)canLegallyVote;
 	- (void)castBallot;
-
+	
+*Note the '-' at the start of methods. Recall that '-' means that it is a method of the object, not the class. '+' indicates a method is a class method and is performed by the class when called.*
+	
 #####Creating .m Files
+
+1.	Import the appropriate header file:
+
+\#import "Person.h"
+
+@implementation
+
+\- (int)age {
+	return age;
+}
+\- (void)setAge:(int)value {
+	age = value;
+}
+
+// other methods
+
+@end
+
+2. Add code for the different methods and their execution. Note in the example below, the 'self' keyword means perform the method age from this object.
+
+\- (BOOL)canLegallyVote {
+	return ([self age] >= 18);
+}
+
+\- (void)castBallot {
+	if ([self canLegallyVote]) {
+		// do voting stuff
+	} else {
+		NSLog (@"I'm not allowed to vote!");
+	}
+}
+
+
+####Superclass and Subclass
+
+- super: keyword means you are calling the method from an object's superclass.
+
+####Overriding a Method
+
+There may be cases where you will want to take a superclasses' method, but customize it for the subclass. Examples:
+
+- (id)init;
+- (id)initWithName:(NSString *)name;
+
+
+###Object Lifecycle
+
+- Creating Objects
+- Memory Management
+- Destroying Objects
+
+####Creating Objects
+
+Two part process:
+
+- alloc: Method allocate appropriate amount of memory to store object (like giving it a person an address for a home)
+- init: Creates initial values and other setup for new object
+
+Person *person = nil; // makes a generic person object
+
+person = [[Person alloc] init]; // create space for new object, then initializes it
+
+The equivalent, terser version on one line:
+
+Person *person = [[Person alloc] init];
+
+####Memory Management
+
+After you are done using an object, it would just remain there in memory as an application runs. Over time, all the objects would collectively tie up too much memory, and that is why programs such as Objective-C have explicit ways to remove objects out of memory:
+
+- Allocation: alloc
+- Destruction: dealloc
+
+The calls must be balanced, in other words for each allocation, you need to deallocate once, otherwise your application may leak or crash.
+
+For the most part, you do not call -dealloc directly, you use reference counting which is built into all NSObjects:
+
+- > 0 means an object is alive and valid; this is the default for objects
+- 1 objects created as part of -copy and +alloc; need to specify when object will be removed
+- retain increments retain count
+- release decrements retain count
+- When retain count ==0 then object is automatically destroyed by -dealloc
+- Once destroyed, there is no retrieving an object
+
+Example:
+
+Person *person = nil; // create object
+
+person = [[Person alloc] init]; // allocate memory and initialize object
+
+[person doSomething]; 
+
+[person release]; // this destroys 
+
+Note that if you assign an object to another variable, it is not implicitly retained, so you still need to explicitly retain it. One thing to also do is after you release an object to set it to nil so you do not crash (no response will occur, but also no crash will either):
+ 
+[person release];
+
+person = nil;
+
+[person doSomething]; // no response
+
+*Note: The only case where you would use dealloc is if you overwrite the dealloc method for your class, for instance to do some special closing tasks prior to destroying the object. In that case, you would have -[super dealloc] in your custom dealloc method.*
+
+####Object Ownership
+
+The issue here is how to handle an object that is used by another one and make sure that it is not destroyed why you are trying to accomplish something. There are two approaches:
+
+1. The method that uses the object should increase the retain count of the object. For instance in a setName method:
+
+if (name != newName) {
+	[name release];
+	name = [newName retain]; // increases retain count for name
+}
+
+2. The method that uses the object can make a copy it:
+
+if (name != newName) {
+	[name release];
+	name = [newName copy]; // copy returns a new object with retain count of 1 and we assign it to name
+}
+
+####Releasing Instance Variables
+
+So if you remove an object you will want to make sure that the instance variables associated with the object are also removed. Here is where you can explicitly override NSObject dealloc method with your own and release the variables:
+
+@implementation Person
+
+\- (void)dealloc {
+	
+	// cleanup
+	[name release]; // reduces retain count to 0
+	
+	// call super to actually destroy whole object and variables
+	[super dealloc]
+	}
+
+####Autorelease
+
+In this case an object is released/removed, but not immediately. If the object is a return value for instance it would be retained for the method calling it and later released. This is especially useful for methods that return newly created objects.
+
+- (NSString *)fullName {
+	NSString *result;
+	
+	result = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName]
+	
+	[result autorelease];
+	
+	return result;
+}
+
+Typically methods that include an alloc, or copy, or new statement should then call autorelease. Most other methods automatically return autoreleased objects, so you do not have to call it explicitly:
+
+NSMutableString *string = [NSMutableString string];
+
+####Object Properties
+
+These can be used to access object attributes you use properties. They include shortcuts for getter/setter methods, and you can use them to specify whether an attribute is read-only or if can also be overwritten. Finally you use properties to specify memory management rules:
+
+1.	Updating the header with properties:
+
+\#import <Foundation/Foundation.h>
+
+@interface Person
+{
+	// instance variables
+	NSString *name;
+	int age;
+}	
+	// properties
+	@property int age;
+	@property (copy) NSString *name;
+	@property (readonly) BOOL canLegallyVote;
+
+\- (void)castBallot;	
+@end
+
+2.	Updating the implementation:
+
+@implementation Person
+
+@synthesize age; // maps this value to attribute in header
+@synthesize name; // also maps value to attribute value
+\- (BOOL)canLegallyVote {
+	return (age > 17);
+}
+
+@end
+
+To distinguish read only properties from those that can be changed we use the keyword (readonly):
+
+@property (readonly) BOOL canLegallyVote;
+@property int age; // by default read-write
+
+To specify memory management for properties we use one of three keywords (assign, retain, or copy):
+
+@property (assign) NSString *name; // assigns pointer
+@property (retain) NSString *name; // calls retain
+@property (copy) NSString *name; // calls copy
+
+Even though an implemented property already has implicit getter/setter methods, you can still explicitly create a custom getter or setter:
+
+@implementation Person
+
+@synthesize age;
+@synthesize name;
+
+\- (void)setAge:(int)value {
+	age = value;
+	// do something else to age
+}
+
+@end
+
+Note that using dot syntax and properties will mean that any explicit getter or setter will be used. A regular assignment statement will simply update the attribute value using the default getter/setter and will perform no other operations as part of the get/set:
+
+@implementation Person 
+\- (void)doSomething {
+	name = @"Fred"; // changes ivar directly
+	self.name = @"Fred"; // calls explicit setter method
+}
 
 
 
