@@ -1,3 +1,5 @@
+*DRAFT*
+
 ##Outline
 
 - Introduction, First Application
@@ -518,6 +520,131 @@ The curly bracket that follows a class declaration should contain any instance v
 After the closing curly brace, any methods that this class implements should be declared. Any methods you declare here must have respective method implementations in the .m file for this class. If a method implementation is missing, you will get a  compiler warning.
 
 Finally the @end keyword completes the class declaration.
+
+####Adding Variables
+
+Variables are declared in the .h file of a class, and are placed right after the class declaration in curly braces:
+
+@interface Possesion : NSObject {
+
+	NSString *possesionName;
+	NSString *serialNumber;
+	int valueInDollars;
+	NSDate *dateCreated;
+}
+
+Note that variables of type object have a * prefix and variables which are primitive data types do not.
+
+####Accessors and Properties
+
+After you have declared instance variables you need methods to get and set them. These methods are called accessors. In Objective-C 2.0 you use properties to access variables. The most basic way to declare a property is as follows:
+
+@property int valueInDollars;
+
+There are other elements you can add to a property declaration to make that variable read-only, and also to specify how that variable is handled in memory. 
+
+#####Declaring Properties
+
+Property declaration are made in the header file after the curly brackets which end variable declarations:
+
+@interface Possession : NSObjects
+{
+	NSString *possesionName;
+	NSString *serialNumber;
+	int valueInDollars;
+	NSDate *dateCreated;
+}
+
+@property (nonatomic, copy) NSString *possessionName;
+@property (nonatomic, copy) NSString *serialNumber;
+@property (nonatomic) in valueInDollars;
+@property (nonatomic, readonly) NSDate *dateCreated;
+
+@end
+
+We make several settings for the properties: 
+
+- By default, properties are atomic, which means a lock must be used when getting or setting the variable. When we specify the property is nonatomic, we do not need a lock.
+- Properties can be set to readonly; by default they can be read and overwritten.
+- For setting a variable, there are different ways which impact memory allocation. The simplest is assignment, the other options are copy or retain.
+ 
+#####Implementing Properties
+
+After you declare properties in the header file, you still need to synthesize them, which provides the getters and setters for the properties. You do this in the .m implementation file for the class:
+
+\#import "Possesion.h"
+
+@implementation Possesion
+
+@synthesize possesionName, serialNumber, valueInDollars, dateCreated;
+
+@end
+
+You can also create a custom getter and setter which might perform other actions with a get or set method.
+
+#####Overriding Methods
+
+If your object inherits from a superclass and you want to customize a method for instances, you would override the method.
+
+Basically you provide a different implementation for this method in your subclass in the .m file:
+
+- (NSString *)description
+{	NSString *descriptionString = 
+	[[NSString alloc] initWithFormat:@"%@ (%@): Worth $%d, Recording on %@", 
+	possessionName,
+	serialNumber,
+	valueInDollars,
+	dateCreated];
+	return descriptionString;
+}
+
+*Note here we are not yet concerned about the memory management issue in the above code. We will address that later.*
+
+#####Initializers
+
+To create new object you first allocate memory for the object with alloc then initialize it with init. Since all objects inherit from NSObject, and init is the main initializer for NSObject, we refer to it as a designated initializer. 
+
+The designated initializer checks to see each instance variable has a value. If so, an new object is valid; that is, it will function predictably.
+
+If we want to create objects based on given values, we update the header with a new initializer method:
+
+@property (nonatomic, readonly) NSDate *dateCreated;
+
+\- (id)initWithPossessionName:(NSString *)name
+valueInDollars:(int)value
+				serialNumber:(NSString *)sNumber;
+@end
+
+This method takes three arguments and sets the variables for the new object as the three values. It returns id, which is a pointer to the new object.
+
+#####Self
+
+The keyword self is used so an object can send message to itself. It does not need to be declared, rather it is an implicit local variable that points to the object running the method.
+
+When you return a pointer to the object running the method:
+
+return self;
+
+Sends a pointer to the object running the method. If, in the case the new object is not initialized, it will return nil.
+
+#####Super
+
+The keyword super is way to call a method implementation that belongs to the superclass for an object. Often you want to add custom implementation in a subclass and perform it on top of a superclass:
+
+- (void)thisMethod
+{
+	[super thisMethod];
+	[self doExtra];
+}
+
+#####Initializer Chain
+
+What if you want to create an initializer but assume you might not have all values you want to create for an object. You can create another custom initializer, one that calls the designated initializer and provides it default values for the missing arguments. 
+
+\- (id)initWithPossessionName: (NSString *) name
+
+If you want a designated initializer established for a subclass and use it instead of the superclass's you need to specifically override that init:
+
 
 #####Header File
 
