@@ -1,0 +1,197 @@
+<h1>Memory Management</h1>
+
+<p>One of the most important things that differentiates Objective-C from many other languages is memory management. </p>
+
+<p>This is tricky for non-programmers and programmers alike, so the main point to understand is that handling memory is much more explicit in Objective-C. This means it is up to you, as the developer, to actively add things in your code to handle what is stored in the computer's random access memory (RAM) when your code runs.</p>
+
+<p>In other languages, memory management is much more implicit. Memory management may be provided through garbage collection when your code runs. This means that the language and tools are designed so that you can create objects and data and it is automatically cleared out of memory to free up new space. </p>
+
+<p>As easy as this sounds for the developer, the drawback is that most garbage collectors are far from perfect and efficient. Ultimately for languages like Objective with more explicit memory management, is it is one more one more thing for a developer to handle; the upside is that languages with more explicit forms of memory management tend to be efficient and fast.</p>
+
+<h2>How Memory Works</h2>
+
+<p>iPhones, iPads and other mobile devices have less space for memory than other, physically larger devices such as laptops and workstations. So memory management is already more of an issue when you create an application. When your application starts an iPhone or iPad, it reserves a heap of memory from the RAM for the application. This heap is a pile of memory your application can use.</p>
+
+<p>The two issues you face when managing memory are:</p>
+
+<ul>
+<li>Memory leaks: forgetting to free up memory when it is no longer needed.</li>
+<li>Premature deallocation: removing objects from memory when they are still needed by other objects.</li>
+</ul>
+
+<h2>Memory Management Basics</h2>
+
+<p>After you are done using an object, it would just remain there in memory as an application runs. Over time, all the objects would collectively tie up too much memory, and that is why programs such as Objective-C have explicit ways to remove objects out of memory:</p>
+
+<ul>
+<li>Allocation: alloc</li>
+<li>Destruction: dealloc</li>
+</ul>
+
+<p>The calls must be balanced, in other words for each allocation, you need to deallocate once, otherwise your application may leak or crash.</p>
+
+<p>Example:</p>
+
+<p>Person *person = nil; // create object</p>
+
+<p>person = [[Person alloc] init]; // allocate memory and initialize object</p>
+
+<p>[person doSomething]; </p>
+
+<p>[person release]; // this destroys</p>
+
+<h2>Using Reference Counting</h2>
+
+<p>In Objective-C, objects are responsible for deallocating memory for themselves. But for the most part, you do not call -dealloc directly, you use reference counting which is built into all NSObjects. </p>
+
+<p>Objects have a retain count, which serves as a score, which tells the object whether an object should remove itself from memory. Other objects can change an object's retain count, an thereby save the object for a longer time if it is still needed. This helps avoid premature deallocation and memory leaks. </p>
+
+<p>In reference counting:</p>
+
+<ul>
+<li>> 0 means an object is alive and valid; this is the default for objects</li>
+<li>+1 is added when objects are created as part of -copy and +alloc; need to specify when object will be removed</li>
+<li>retain: this adds 1 to a retain count</li>
+<li>release: this minuses 1 from retain count</li>
+<li>When retain count == 0 then object is automatically destroyed by dealloc</li>
+<li>Once destroyed, there is no retrieving an object</li>
+</ul>
+
+<p>If you assign an object to another variable, it is not implicitly retained, so you still need to explicitly retain it. One thing to also do is after you release an object to set it to nil so you do not crash (no response will occur, but also no crash will either):</p>
+
+<p>[person release];</p>
+
+<p>person = nil;</p>
+
+<p>[person doSomething]; // no response</p>
+
+<p><em>Note: The only case where you would use dealloc is if you overwrite the dealloc method for your class, for instance to do some special closing tasks prior to destroying the object. In that case, you would have -[super dealloc] in your custom dealloc method.</em></p>
+
+<h2>Managing Object Ownership</h2>
+
+<p>So what if you have an object that another one depends upon for a value or functionality? The issue here is how to handle an object that is used by another one and make sure that it is not destroyed while you are trying to accomplish something. There are two approaches:</p>
+
+<ol>
+<li>The method that uses the object should increase the retain count of the object. For instance in a setName method:</li>
+</ol>
+
+<p>if (name != newName) {
+    [name release];
+    name = [newName retain]; // increases retain count for name
+}</p>
+
+<ol>
+<li>The method that uses the object can make a copy it:</li>
+</ol>
+
+<p>if (name != newName) {
+    [name release];
+    name = [newName copy]; // copy returns a new object with retain count of 1 and we assign it to name
+}</p>
+
+<h2>Releasing Instance Variables</h2>
+
+<p>As part of memory management, if you remove an object you will want to make sure that the instance variables associated with the object are also removed. Here is where you can explicitly override NSObject dealloc method with your own and release the variables:</p>
+
+<p>@implementation Person</p>
+
+<p>- (void)dealloc {</p>
+
+<pre><code>// cleanup
+[name release]; // reduces retain count to 0
+
+// call super to actually destroy whole object and variables
+[super dealloc]
+}
+</code></pre>
+
+<h2>Using Autorelease</h2>
+
+<p>In this case an object is released/removed, but not immediately. If the object is a return value for instance it would be retained for the method calling it and later released. This is especially useful for methods that return newly created objects.</p>
+
+<ul>
+<li><p>(NSString *)fullName {
+NSString *result;</p>
+
+<p>result = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName]</p>
+
+<p>[result autorelease];</p>
+
+<p>return result;
+}</p></li>
+</ul>
+
+<p>Typically methods that include an alloc, or copy, or new statement should then call autorelease. Most other methods automatically return autoreleased objects, so you do not have to call it explicitly:</p>
+
+<p>NSMutableString *string = [NSMutableString string];</p>
+
+<h2>Memory Management and Object Properties</h2>
+
+<p>These can be used to access object attributes you use properties. They include shortcuts for getter/setter methods, and you can use them to specify whether an attribute is read-only or if can also be overwritten. Finally you use properties to specify memory management rules:</p>
+
+<ol>
+<li>Updating the header with properties:</li>
+</ol>
+
+<p>#import <Foundation/Foundation.h></p>
+
+<p>@interface Person
+{
+    // instance variables
+    NSString *name;
+    int age;
+} <br>
+    // properties
+    @property int age;
+    @property (copy) NSString *name;
+    @property (readonly) BOOL canLegallyVote;</p>
+
+<p>- (void)castBallot; <br>
+@end</p>
+
+<ol>
+<li>Updating the implementation:</li>
+</ol>
+
+<p>@implementation Person</p>
+
+<p>@synthesize age; // maps this value to attribute in header
+@synthesize name; // also maps value to attribute value
+- (BOOL)canLegallyVote {
+    return (age > 17);
+}</p>
+
+<p>@end</p>
+
+<p>To distinguish read only properties from those that can be changed we use the keyword (readonly):</p>
+
+<p>@property (readonly) BOOL canLegallyVote;
+@property int age; // by default read-write</p>
+
+<p>To specify memory management for properties we use one of three keywords (assign, retain, or copy):</p>
+
+<p>@property (assign) NSString *name; // assigns pointer
+@property (retain) NSString *name; // calls retain
+@property (copy) NSString *name; // calls copy</p>
+
+<p>Even though an implemented property already has implicit getter/setter methods, you can still explicitly create a custom getter or setter:</p>
+
+<p>@implementation Person</p>
+
+<p>@synthesize age;
+@synthesize name;</p>
+
+<p>- (void)setAge:(int)value {
+    age = value;
+    // do something else to age
+}</p>
+
+<p>@end</p>
+
+<p>Note that using dot syntax and properties will mean that any explicit getter or setter will be used. A regular assignment statement will simply update the attribute value using the default getter/setter and will perform no other operations as part of the get/set:</p>
+
+<p>@implementation Person 
+- (void)doSomething {
+    name = @"Fred"; // changes ivar directly
+    self.name = @"Fred"; // calls explicit setter method
+}</p>

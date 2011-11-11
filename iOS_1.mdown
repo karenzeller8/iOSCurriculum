@@ -234,14 +234,12 @@ Every application you create will have a file called your_app_name.plist. This i
 - Behavior is expressed by methods. 
 - Instance variables are available using getter and setter methods
 
-###Syntax
 
-In Objective-C, the keyword for instance variable is 'ivar'
+###Dot Syntax
 
+Objective-C 2.0 introduced dot syntax used to separate object and method being called from that object, including getter/setter methods (also known as attribute accessors) 
 
-####Dot Syntax
-
-Objective-C 2.0 introduced dot syntax used to separate object and method being called from that object, including getter/setter methods (also known as attribute accessors) This is similar to other languages, and is converted by the compiler into the appropriate method call and object:
+This is similar to other languages, such as Java or Ruby, and is converted by the compiler into the appropriate method call and object:
 
 int edition = book1.edition //sets value of edition to the edition from a book object.
 
@@ -406,13 +404,13 @@ Example of creating a class:
 	- The header declares the new class, its superclass, instance variables, and methods for the class.
 	- The .m file is where you provide code for implementing methods for the class.
 	 
-####Mutable and Immutable
+###Using Mutable and Immutable Objects
 
 Mutable objects, such as arrays can be changed or you can add to them. Immutable objects such as NSArray is immutable, meaning you cannot add or remove objects after the array is originally (it is a read-only array.)
 
 Major classes that come in mutable and immutable forms are arrays, sets, dictionaries, strings, data.
 
-####Arrays
+###Arrays
 
 Arrays are container that can contain a ordered list of objects. An array does not contain the objects themselves, rather references to each object are in the array. There are two types of arrays in Objective-C:
 
@@ -448,7 +446,23 @@ Array methods include:
 	int numObjects = [array count];
 	[array insertObject:object atIndex:numObjects];
 
-####NSString
+####Using Faster Enumeration
+
+Objective-C 2.0 including syntax changes to the language which includes something called fast enumeration. Typically you would use a counting mechanism to go through items in an array:
+
+	for (int i = 0, i< [items count]; i++) {
+		Possession *item = [items objectAtIndex:i];
+		NSLog(@"%@", item);
+	}
+	
+With fast enumeration you can express this in a concise manner (this is similar to ways of expressing it in other languages, such as Ruby):
+
+	for (Possession *items in items)
+		NSLog(@"%@", item);
+
+This is also less error prone in that you are no longer likely to count to far and overpass the last item in an array.	
+
+###NSString
 
 This class is used throughout CocoaTouch:
 
@@ -506,10 +520,10 @@ No mutable version.
 
 Classes have two parts, one is in the public header file (.h), and the actual implementation of method goes into the private .m file of a project.
 
-@interface Possession : NSObject {
+	@interface Possession : NSObject {
 	
-}
-@end
+	}
+	@end
 
 Here we declare a class using the keywords @interface ClassName. The colin and name of the superclass follows. In Objective-C you can only inherit from one class.
 
@@ -600,7 +614,7 @@ Basically you provide a different implementation for this method in your subclas
 
 *Note here we are not yet concerned about the memory management issue in the above code. We will address that later.*
 
-#####Initializers
+###Initializers
 
 To create new object you first allocate memory for the object with alloc then initialize it with init. Since all objects inherit from NSObject, and init is the main initializer for NSObject, we refer to it as a designated initializer. 
 
@@ -643,8 +657,34 @@ What if you want to create an initializer but assume you might not have all valu
 
 \- (id)initWithPossessionName: (NSString *) name
 
-If you want a designated initializer established for a subclass and use it instead of the superclass's you need to specifically override that init:
+If you want to use subclass's designated initializer instead of the superclass's you need to specifically override that init in the subclass's implementation. Since the init method is already declared in the superclass we only need to update the .m file:
 
+	- (id)init 
+	{
+		return [self initWithPossessionName:@"Possession"
+							 valueInDollars:0 
+							   serialNumber:@""];
+	}
+	
+###Class Methods
+
+There are times you might want to have methods at the class level. Class methods do not operate on an object nor do they have access to instance variables. To create a class method, declare it in the header file:
+
+	+ (id)randomPossession;
+
+Notice that class method declarations start with '+' and instance methods start with a '-'.
+
+###Exceptions and the Console
+
+Typically the compiler catches errors in your code when you select Build and Run. For instance if you call a method that does not exist for an array, you get the error:
+
+NSMutableArray may not respond to '-thisNewMethod'
+
+Even if it catches an error and you try to run code in the Console, you will get output specific to the error. The key part to examine is the reason:
+
+reason: '-[NSCFArray doSomethingWeird]: unrecognized selector sent to instance 0x10010c8b0'
+
+In this example, the Console tells us we are using a selector (or method call) does not exist for an object. The '-' tells us that the error is for an object not a class, and the NSCFArray tells us it is for a Core Foundation array.
 
 #####Header File
 
@@ -755,7 +795,26 @@ The equivalent, terser version on one line:
 
 Person *person = [[Person alloc] init];
 
-####Memory Management
+#Memory Management
+
+One of the most important things that differentiates Objective-C from many other languages is memory management. 
+
+This is tricky for non-programmers and programmers alike, so the main point to understand is that handling memory is much more explicit in Objective-C. This means it is up to you, as the developer, to actively add things in your code to handle what is stored in the computer's random access memory (RAM) when your code runs.
+
+In other languages, memory management is much more implicit. Memory management may be provided through garbage collection when your code runs. This means that the language and tools are designed so that you can create objects and data and it is automatically cleared out of memory to free up new space. 
+
+As easy as this sounds for the developer, the drawback is that most garbage collectors are far from perfect and efficient. Ultimately for languages like Objective with more explicit memory management, is it is one more one more thing for a developer to handle; the upside is that languages with more explicit forms of memory management tend to be efficient and fast.
+
+##How Memory Works
+
+iPhones, iPads and other mobile devices have less space for memory than other, physically larger devices such as laptops and workstations. So memory management is already more of an issue when you create an application. When your application starts an iPhone or iPad, it reserves a heap of memory from the RAM for the application. This heap is a pile of memory your application can use.
+
+The two issues you face when managing memory are:
+
+- Memory leaks: forgetting to free up memory when it is no longer needed.
+- Premature deallocation: removing objects from memory when they are still needed by other objects.
+
+##Memory Management Basics
 
 After you are done using an object, it would just remain there in memory as an application runs. Over time, all the objects would collectively tie up too much memory, and that is why programs such as Objective-C have explicit ways to remove objects out of memory:
 
@@ -763,15 +822,6 @@ After you are done using an object, it would just remain there in memory as an a
 - Destruction: dealloc
 
 The calls must be balanced, in other words for each allocation, you need to deallocate once, otherwise your application may leak or crash.
-
-For the most part, you do not call -dealloc directly, you use reference counting which is built into all NSObjects:
-
-- > 0 means an object is alive and valid; this is the default for objects
-- 1 objects created as part of -copy and +alloc; need to specify when object will be removed
-- retain increments retain count
-- release decrements retain count
-- When retain count ==0 then object is automatically destroyed by -dealloc
-- Once destroyed, there is no retrieving an object
 
 Example:
 
@@ -781,9 +831,25 @@ person = [[Person alloc] init]; // allocate memory and initialize object
 
 [person doSomething]; 
 
-[person release]; // this destroys 
+[person release]; // this destroys
 
-Note that if you assign an object to another variable, it is not implicitly retained, so you still need to explicitly retain it. One thing to also do is after you release an object to set it to nil so you do not crash (no response will occur, but also no crash will either):
+##Using Reference Counting
+
+In Objective-C, objects are responsible for deallocating memory for themselves. But for the most part, you do not call -dealloc directly, you use reference counting which is built into all NSObjects. 
+
+Objects have a retain count, which serves as a score, which tells the object whether an object should remove itself from memory. Other objects can change an object's retain count, an thereby save the object for a longer time if it is still needed. This helps avoid premature deallocation and memory leaks. 
+
+In reference counting:
+
+- > 0 means an object is alive and valid; this is the default for objects
+- +1 is added when objects are created as part of -copy and +alloc; need to specify when object will be removed
+- retain: this adds 1 to a retain count
+- release: this minuses 1 from retain count
+- When retain count == 0 then object is automatically destroyed by dealloc
+- Once destroyed, there is no retrieving an object
+
+
+If you assign an object to another variable, it is not implicitly retained, so you still need to explicitly retain it. One thing to also do is after you release an object to set it to nil so you do not crash (no response will occur, but also no crash will either):
  
 [person release];
 
@@ -793,9 +859,9 @@ person = nil;
 
 *Note: The only case where you would use dealloc is if you overwrite the dealloc method for your class, for instance to do some special closing tasks prior to destroying the object. In that case, you would have -[super dealloc] in your custom dealloc method.*
 
-####Object Ownership
+##Managing Object Ownership
 
-The issue here is how to handle an object that is used by another one and make sure that it is not destroyed why you are trying to accomplish something. There are two approaches:
+So what if you have an object that another one depends upon for a value or functionality? The issue here is how to handle an object that is used by another one and make sure that it is not destroyed while you are trying to accomplish something. There are two approaches:
 
 1. The method that uses the object should increase the retain count of the object. For instance in a setName method:
 
@@ -811,9 +877,9 @@ if (name != newName) {
 	name = [newName copy]; // copy returns a new object with retain count of 1 and we assign it to name
 }
 
-####Releasing Instance Variables
+##Releasing Instance Variables
 
-So if you remove an object you will want to make sure that the instance variables associated with the object are also removed. Here is where you can explicitly override NSObject dealloc method with your own and release the variables:
+As part of memory management, if you remove an object you will want to make sure that the instance variables associated with the object are also removed. Here is where you can explicitly override NSObject dealloc method with your own and release the variables:
 
 @implementation Person
 
@@ -826,7 +892,7 @@ So if you remove an object you will want to make sure that the instance variable
 	[super dealloc]
 	}
 
-####Autorelease
+##Using Autorelease
 
 In this case an object is released/removed, but not immediately. If the object is a return value for instance it would be retained for the method calling it and later released. This is especially useful for methods that return newly created objects.
 
@@ -844,7 +910,7 @@ Typically methods that include an alloc, or copy, or new statement should then c
 
 NSMutableString *string = [NSMutableString string];
 
-####Object Properties
+##Memory Management and Object Properties
 
 These can be used to access object attributes you use properties. They include shortcuts for getter/setter methods, and you can use them to specify whether an attribute is read-only or if can also be overwritten. Finally you use properties to specify memory management rules:
 
